@@ -15,7 +15,7 @@ def homepage(driver):
 
 def login(driver):
     driver.maximize_window()
-    driver.get("https://app-ispaas.dev.geniussystems.com.np")
+    driver.get("https://app-ispaas.dev.geniussystems.com.np/")
 
 
     wait = WebDriverWait(driver, 10)

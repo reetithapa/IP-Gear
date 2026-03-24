@@ -1,2 +1,2 @@
-primary_mobile,service_type,first_name,last_name,email,preferred_username,interested_product_group,interested_product,entry_source,lead_source,assign_to_me,lead_status,existing_isp,address
-0987654321,FTTH,Rose,Mary,rose@gmail.com,Rose,business-50 mbs,Business - 50 mbps (Price:4444.711/Renew:3371.26),Digital,Door to Door,(ias@geniussystems.com.np),Cold,Wifi Nepal,Baneshwor
+primary_mobile,service_type,first_name,last_name,email,preferred_username,interested_product_group,interested_product,entry_source,lead_source,assign_to_me,lead_status,existing_isp,account_type,remarks,address
+0987654321,FTTH,Rose,Mary,rose@gmail.com,Rose,business-50 mbs,Business - 50 mbps (Price:4444.711/Renew:3371.26),Digital,Door to Door,(ias@geniussystems.com.np),Cold,Wifi Nepal,Testing,Testing,Baneshwor
