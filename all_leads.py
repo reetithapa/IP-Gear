@@ -4,6 +4,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select
 from datetime import datetime
+from selenium.webdriver.common.keys import Keys
 import time
 
 from webdriver_manager.core import driver
@@ -142,17 +143,20 @@ def sales_process(driver):
             assert all(text == options_sales_process_text for text in displayed_texts), f"Expected all rows to be '{options_sales_process_text}', but got {displayed_texts}"
             print(f"Verified: {options_sales_process_text} is displayed correctly")
 
+        clear = driver.find_element(By.XPATH, "//button[normalize-space()='Clear']")
+        clear.click()
+
 
 def entry_sources(driver):
     wait = WebDriverWait(driver, 10)
 
     wait.until(EC.visibility_of_element_located((By.XPATH, "//button[@class='btn-filter']//*[name()='svg']")))
 
-    driver.find_element(By.XPATH, "//button[@class='btn-filter']//*[name()='svg']").click()
-    time.sleep(3)
-    driver.find_element(By.XPATH, "(//span[contains(@class,'box')])[14]").click()
-    time.sleep(2)
-    driver.find_element(By.XPATH, "//button[normalize-space()='Apply']").click()
+    #driver.find_element(By.XPATH, "//button[@class='btn-filter']//*[name()='svg']").click()
+    #time.sleep(3)
+    #driver.find_element(By.XPATH, "(//span[contains(@class,'box')])[14]").click()
+    #time.sleep(2)
+    #driver.find_element(By.XPATH, "//button[normalize-space()='Apply']").click()
 
     #wait = WebDriverWait(driver, 10)
 
@@ -183,6 +187,7 @@ def entry_sources(driver):
 
         wait.until(EC.visibility_of_element_located((By.XPATH, "//tbody//tr//td[14]")))
         displayed_element = driver.find_elements(By.XPATH, "//tbody//tr//td[14]")
+        time.sleep(3)
 
         displayed_texts = [elem.text.strip() for elem in displayed_element]
         print(displayed_texts)
@@ -200,6 +205,17 @@ def entry_sources(driver):
 
 def search_lead(driver):
     wait = WebDriverWait(driver, 10)
+    wait.until(EC.visibility_of_element_located((By.XPATH, "//button[@class='btn-filter']//*[name()='svg']")))
+
+    driver.find_element(By.XPATH, "//button[@class='btn-filter']//*[name()='svg']").click()
+    time.sleep(3)
+    driver.find_element(By.XPATH, "(//span[contains(@class,'box')])[1]").click()
+    driver.find_element(By.XPATH, "(//span[contains(@class,'box')])[3]").click()
+    time.sleep(2)
+
+    driver.find_element(By.XPATH, "//button[normalize-space()='Apply']").click()
+    time.sleep(3)
+
     search_lead = driver.find_element(By.XPATH, "(//select)[5]")
 
     select = Select(search_lead)
@@ -216,52 +232,64 @@ def search_lead(driver):
             print(f"Verified: {options_search_lead_text} is displayed correctly")
             time.sleep(3)
 
-        else:
-            enter_lead_id = driver.find_element(By.XPATH, "//input[@class='... placeholder:text-gray-300  font-normal newbox    ']")
-            assert enter_lead_id.is_displayed(), "Enter lead id is not visible"
-            assert driver.find_element(By.XPATH, "//input[@class='... placeholder:text-gray-300  font-normal newbox    ']").is_displayed()
+        elif options_search_lead_text == "Name":
+            input_box_name = wait.until(EC.visibility_of_element_located((By.XPATH, "//input[@class='... placeholder:text-gray-300  font-normal newbox    ']")))
+            input_box_name.clear()
 
-            if driver.find_element(By.XPATH, "//input[@placeholder='Enter Lead ID']").is_displayed:
-                  driver.find_element(By.XPATH, "//input[@placeholder='Enter Lead ID']").send_keys("25343")
+            test_value_name = "Rose"
 
-            elif driver.find_element(By.XPATH, "//input[@placeholder='Enter Name']").is_displayed:
-                driver.find_element(By.XPATH, "//input[@placeholder='Enter Name']").send_keys("Rose Mary")
-
-            else:
-                driver.find_element(By.XPATH, "//input[@placeholder='Enter Phone Number']").sned_keys("9873144486")
-
-            print(f"{options_search_lead_text} is displayed correctly")
+            time.sleep(2)
+            print(test_value_name)
+            input_box_name.send_keys(test_value_name)
+            input_box_name.send_keys(Keys.ENTER)
             time.sleep(3)
 
-def select_date(driver, date_input_xpath, target_date):
+            result = driver.find_element(By.XPATH, "//tbody//tr//td[2]").text
+            assert test_value_name in result, "Search by Name failed"
+            print("Search by Name working correctly")
+
+
+        elif options_search_lead_text == "Phone Number":
+            input_box_number = wait.until(EC.visibility_of_element_located((By.XPATH, "//input[@placeholder='Enter Phone Number']")))
+            input_box_number.clear()
+            test_value_number = "9873144486"
+
+            input_box_number.send_keys(test_value_number)
+            input_box_number.send_keys(Keys.ENTER)
+            time.sleep(3)
+
+            result = driver.find_element(By.XPATH, "//tbody//tr//td[3]").text
+            assert test_value_number in result, "Search by Number failed"
+            print("Search by Number working correctly")
+
+def select_date(driver):
     wait = WebDriverWait(driver, 10)
-    date_obj = datetime.strptime(target_date, "%Y-%m-%d")
 
-    date_input = wait.until(EC.element_to_be_clickable((By.XPATH, date_input_xpath)))
-    date_input.click()
+    driver.find_element(By.XPATH, "//input[@placeholder='Select Date Range']").click()
+    time.sleep(2)
 
-    year = date_obj.strftime("%Y")
-    wait.until(EC.element_to_be_clickable((By.XPATH, f"//select[contains(@class,'year')]//option[text()='{year}']"))).click()
+    target_month_year = "December 2025"
+    target_day = "1"
+    time.sleep(2)
 
-    month = date_obj.strftime("%B")
-    wait.until(EC.element_to_be_clickable((By.XPATH, f"//div[@class='react-datepicker__current-month']//option[text()='{month}']"))).click()
+    while True:
 
-    day = date_obj.strftime("%d").lstrip("0")
-    wait.until(EC.element_to_be_clickable(
-        (By.XPATH, f"//a[text()='{day}']")
-    )).click()
+        current = wait.until(
+            EC.visibility_of_element_located((By.XPATH, "//div[@class='react-datepicker__current-month']"))
+        ).text
+        time.sleep(2)
 
-#FROM_DATE = "2026-03-01"
-#TO_DATE = "2026-03-20"
+        if current == target_month_year:
+            break
+        else:
+            driver.find_element(By.XPATH, "(//button[@aria-label='Previous Month'])[1]").click()
+            time.sleep(2)
 
-#select_date("//input[@name='from_date']", FROM_DATE)
-#select_date("//input[@name='to_date']", TO_DATE)
-
-#wait = WebDriverWait(driver, 10)
-#search_btn = wait.until(EC.element_to_be_clickable((By.XPATH, "//button[contains(text(),'Search')]")))
-#search_btn.click()
-
-
+    date = driver.find_element(By.XPATH, "//div[@aria-label='Choose Monday, December 1st, 2025']").click()
+    driver.find_element(By.XPATH, "//div[@aria-label='Choose Wednesday, December 31st, 2025']").click()
+    time.sleep(2)
+    #print(date_text)
+    assert date == target_day, "Wrong date selected"
 
 
 

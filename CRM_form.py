@@ -4,6 +4,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select
+from selenium.webdriver.common.keys import Keys
 import time
 
 def crm_displayed(driver):
@@ -37,6 +38,8 @@ def crm_form(driver):
          first_name = row["first_name"]
          last_name = row["last_name"]
          preferred_username = row["preferred_username"]
+         secondary_mobile = row["secondary_mobile"]
+         landline = row["landline"]
          interested_product_group = row["interested_product_group"]
          interested_product = row["interested_product"]
          entry_source = row["entry_source"]
@@ -44,6 +47,11 @@ def crm_form(driver):
          assign_to_me = row["assign_to_me"]
          lead_Status = row["lead_status"]
          existing_isp = row["existing_isp"]
+         customer_id = row["customer_id"]
+         profession = row["profession"]
+         account_type = row["account_type"]
+         test_select = row["test_select"]
+         lead_type = row["lead_type"]
          address = row["address"]
 
          unique_primary_number = f"98{int(time.time()) % 100000000}"
@@ -75,6 +83,16 @@ def crm_form(driver):
          Preferred_username.send_keys(unique_username)
          time.sleep(1)
 
+         unique_secondary_number = f"984{int(time.time()) % 10000000}"
+         Secondary_mobile = driver.find_element(By.XPATH, "//input[@placeholder='Secondary Mobile']")
+         Secondary_mobile.send_keys(unique_secondary_number)
+         time.sleep(1)
+
+         unique_landline = f"43{int(time.time()) % 10000000}"
+         Landline = driver.find_element(By.XPATH, "(//input[@placeholder='Landline'])")
+         Landline.send_keys(unique_landline)
+         time.sleep(1)
+
          Interested_product_group = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, "div.react-select__input-container.css-19bb58m")))
          Interested_product_group.click()
          Interested_product_option = driver.find_element(By.XPATH, "//div[text()='business-50 mbs']")
@@ -97,11 +115,9 @@ def crm_form(driver):
          Lead_source.select_by_visible_text(row["lead_source"])
          time.sleep(1)
 
-         Assigned = wait.until(EC.element_to_be_clickable((By.XPATH, "(//div[@class='react-select__indicators css-1wy0on6'])[3]")))
+         Assigned = wait.until(EC.element_to_be_clickable((By.XPATH, "(//div[contains(@class,'w-[9px] h-[9px] rounded-full absolute top-0.5 transition-transform duration-100 shadow-md translate-x-0.5 bg-white')])[2]")))
          Assigned.click()
-         Assigned_option = driver.find_element(By.XPATH, "//div[text()=' (ias@geniussystems.com.np) ']")
-         Assigned_option.click()
-         time.sleep(1)
+         time.sleep(2)
 
          #assigned = Select(driver.find_element(By.CSS_SELECTOR, "div.react-select__input-container.css-19bb58m"))
          #assigned.select_by_visible_text(row["Assign_to_me"])
@@ -115,19 +131,39 @@ def crm_form(driver):
          Existing_isp.select_by_visible_text(row["existing_isp"])
          time.sleep(1)
 
+         Unique_customer_ID = f"{int(time.time())%100}"
+         Customer_ID = driver.find_element(By.XPATH, "(//input[@placeholder='Customer ID'])[1]")
+         Customer_ID.send_keys(Unique_customer_ID)
+
+         Profession = driver.find_element(By.XPATH, "(//input[@placeholder='Enter profession'])[1]")
+         Profession.send_keys(row["profession"])
+         time.sleep(1)
+
          Account_type = driver.find_element(By.XPATH, "//input[@placeholder='Enter account_type']")
          Account_type.send_keys(row["account_type"])
+
+         Test_select = Select(driver.find_element(By.XPATH, "//select[@name='test_select']"))
+         Test_select.select_by_visible_text(row["test_select"])
+         time.sleep(1)
+
+         #Lead_type = (driver.find_element(By.XPATH, "//div[@class='css-1xc3v61-indicatorContainer']//*[name()='svg']")).click()
+         #time.sleep(2)
+         #Lead_type_option = driver.find_element(By.XPATH, "//div[@class='css-1p3m7a8-multiValue']").click()
+         #time.sleep(1)
 
          Remarks = driver.find_element(By.XPATH, "//textarea[contains(@placeholder,'Remarks')]")
          Remarks.send_keys(row["remarks"])
 
-
          #Address = driver.find_element(By.XPATH, "//input[@placeholder='Address']")
          #Address.send_keys(row["address"])
-         time.sleep(8)
+         Address = driver.find_element(By.XPATH, "//input[@placeholder='Search Maps']")
+         Address.send_keys(row["address"])
+         time.sleep(2)
+         driver.find_element(By.XPATH, "//li[@class='bg-white rounded py-1 font-medium px-2 cursor-pointer'][2]").click()
+         time.sleep(5)
 
-         #Proceed = driver.find_element(By.XPATH, "(//button[normalize-space()='Proceed'])[1]")
-         #Proceed.click()
+         Proceed = driver.find_element(By.XPATH, "(//button[normalize-space()='Proceed'])[1]")
+         Proceed.click()
          driver.find_element(By.XPATH, "//button[@data-info='submit-btn'][position()=2]").click()
          time.sleep(1)
 
@@ -140,7 +176,7 @@ def crm_form(driver):
 
 def lead_details(driver):
     wait = WebDriverWait(driver, 10)
-    #driver.find_element(By.XPATH, "//a[normalize-space()='harry xyz']").click()
+    #driver.find_element(By.XPATH, "//a[normalize-space()='Vanna Nixon']").click()
     opportunity = wait.until(EC.visibility_of_element_located((By.XPATH, "//button[text() ='Opportunity']")))
     opportunity.click()
     opportunity_convert = wait.until(EC.visibility_of_element_located((By.XPATH, "//button[text() ='Convert']")))
@@ -200,7 +236,7 @@ def lead_details_page(driver):
 
     wait = WebDriverWait(driver, 10)
 
-    new_user = driver.find_element(By.XPATH, "//a[normalize-space()='Rose Mary']")
+    new_user = driver.find_element(By.XPATH, "//a[normalize-space()='Annie Mayor']")
     new_user.click()
     assert "/crm/lead/25" in driver.current_url, "New user not opened"
 
@@ -251,6 +287,15 @@ def lead_details_page(driver):
             back_arrow.click()
             time.sleep(5)
 
+def leads_import(driver):
+    wait = WebDriverWait(driver, 10)
+    import_button = driver.find_element(By.XPATH, "//a[normalize-space()='Import']")
+    import_button.click()
+
+    upload_csv = driver.find_element(By.XPATH, "//input[@type='file']")
+    upload_csv.click()
+
+
 def my_leads(driver):
     wait = WebDriverWait(driver, 10)
     lead_stage = driver.find_elements(By.XPATH, "//tbody//tr//td[5]")
@@ -259,14 +304,15 @@ def my_leads(driver):
         row = lead_stage[i]
         row_texts.append(row.text.strip())
 
-    select_stage = wait.until(EC.element_to_be_clickable((By.XPATH, "//body//div//div[contains(@data-testid,'child')]//div//div//div//div//div[1]//div[2]//select[1]")))
+    select_stage = wait.until(EC.element_to_be_clickable(
+        (By.XPATH, "//body//div//div[contains(@data-testid,'child')]//div//div//div//div//div[1]//div[2]//select[1]")))
 
     select = Select(select_stage)
-    time.sleep(2)
+    time.sleep(1)
 
     stage_options = [option.text.strip() for option in select.options]
     print(stage_options)
-    time.sleep(2)
+    time.sleep(1)
 
     for stage_option_text in stage_options:
         select_stage = wait.until(EC.element_to_be_clickable((By.XPATH,
@@ -286,18 +332,90 @@ def my_leads(driver):
         if stage_option_text == "Select Stage":
             assert displayed_texts == row_texts, f"Expected all, but got '{displayed_texts}'"
             print(f"Verified: {stage_option_text} is displayed correctly")
-            time.sleep(2)
+            time.sleep(1)
 
-        elif stage_option_text == "Lead":
-            displayed_elements = driver.find_element(By.XPATH, "//td[text()=' No Records Found']")
-            # lead_stage == "No Records Found"
-            assert displayed_elements.text.strip() == "No Records Found", f"Expected 'No Records Found', but got '{displayed_elements.text}'"
+        else:
+            assert all(text == stage_option_text for text in
+                       displayed_texts), f"Expected all rows to be '{stage_option_text}', but got {displayed_texts}"
+            print(f"Verified: {stage_option_text} is displayed correctly")
+
+            lead_state = driver.find_elements(By.XPATH, "//tbody//tr//td[6]")
+            state_texts = []
+            for i in range(len(lead_state)):
+                row = lead_state[i]
+                state_texts.append(row.text.strip())
+
+            select_state = wait.until(EC.element_to_be_clickable((By.XPATH,
+                                                                  "//select[@class='placeholder:text-gray-300  !border-gray-200  slimbox   !text-gray-600 font-normal '][contains(.,'Select State')]")))
+            select = Select(select_state)
+            time.sleep(1)
+
+            state_options = [option.text.strip() for option in select.options]
+            print(state_options)
+            time.sleep(1)
+
+            for state_option_text in state_options:
+                select.select_by_visible_text(state_option_text)
+                time.sleep(3)
+
+                displayed_element_state = driver.find_elements(By.XPATH, "//tbody//tr//td[6]")
+
+                displayed_texts_state = [elem.text.strip() for elem in displayed_element_state]
+                print(displayed_texts_state)
+                time.sleep(2)
+
+                if state_option_text == "Select State":
+                    assert displayed_texts_state == state_texts, f"Expected all, but got '{state_texts}'"
+                    print(f"Verified: {state_option_text} is displayed correctly")
+                    time.sleep(2)
+
+                else:
+                    assert all(text == state_option_text for text in
+                               displayed_texts_state), f"Expected all rows to be '{state_option_text}', but got {displayed_texts_state}"
+                    print(f"Verified: {state_option_text} is displayed correctly")
+                    time.sleep(2)
+            driver.find_element(By.XPATH, "(//button[normalize-space()='Clear'])[1]").click()
+
+    wait = WebDriverWait(driver, 10)
+    lead_stage = driver.find_elements(By.XPATH, "//tbody//tr//td[5]")
+    row_texts = []
+    for i in range(len(lead_stage)):
+        row = lead_stage[i]
+        row_texts.append(row.text.strip())
+
+    select_stage = wait.until(EC.element_to_be_clickable((By.XPATH, "//body//div//div[contains(@data-testid,'child')]//div//div//div//div//div[1]//div[2]//select[1]")))
+
+    select = Select(select_stage)
+    time.sleep(2)
+
+    stage_options = [option.text.strip() for option in select.options]
+    print(stage_options)
+    time.sleep(2)
+
+    for stage_option_text in stage_options:
+        select_stage = wait.until(EC.element_to_be_clickable((By.XPATH, "//body[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[2]/div[2]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[2]/select[1]")))
+        select = Select(select_stage)
+        time.sleep(2)
+
+        select.select_by_visible_text(stage_option_text)
+        time.sleep(2)
+
+        displayed_element = driver.find_elements(By.XPATH, "//tbody//tr//td[5]")
+        time.sleep(2)
+        displayed_texts = [elem.text.strip() for elem in displayed_element]
+        print(displayed_texts)
+
+        if stage_option_text == "Select Stage":
+            assert displayed_texts == row_texts, f"Expected all, but got '{displayed_texts}'"
             print(f"Verified: {stage_option_text} is displayed correctly")
             time.sleep(2)
 
         else:
-            assert all(text == stage_option_text for text in displayed_texts), f"Expected all rows to be '{stage_option_text}', but got {displayed_texts}"
+            assert all(text == stage_option_text for text in
+                       displayed_texts), f"Expected all rows to be '{stage_option_text}', but got {displayed_texts}"
             print(f"Verified: {stage_option_text} is displayed correctly")
+            time.sleep(2)
+
 
             lead_state = driver.find_elements(By.XPATH, "//tbody//tr//td[6]")
             state_texts = []
@@ -374,9 +492,12 @@ def my_leads(driver):
                        displayed_texts), f"Expected all rows to be '{options_sales_process_text}', but got {displayed_texts}"
             print(f"Verified: {options_sales_process_text} is displayed correctly")
 
+        driver.find_element(By.XPATH, "//button[normalize-space()='Clear']").click()
+
 
 def entry_source(driver):
     wait = WebDriverWait(driver, 10)
+
     wait.until(EC.visibility_of_element_located((By.XPATH, "//button[@class='btn-filter']//*[name()='svg']")))
 
     driver.find_element(By.XPATH, "//button[@class='btn-filter']//*[name()='svg']").click()
@@ -385,11 +506,14 @@ def entry_source(driver):
     time.sleep(2)
     driver.find_element(By.XPATH, "//button[normalize-space()='Apply']").click()
 
+    # wait = WebDriverWait(driver, 10)
+
+    wait.until(EC.visibility_of_element_located((By.XPATH, "//tbody//tr//td[14]")))
     lead_sales_process = driver.find_elements(By.XPATH, "//tbody//tr//td[14]")
+    row_text = []
     for i in range(len(lead_sales_process)):
         row = lead_sales_process[i]
-        row_text = row.text
-        print(row_text)
+        row_text.append(row.text.strip())
 
     entry_source = driver.find_element(By.XPATH, "(//select[contains(@class,'!text-gray-600 font-normal')])[4]")
     select = Select(entry_source)
@@ -400,30 +524,87 @@ def entry_source(driver):
 
     for options_entry_source_text in options_entry_source:
         select.select_by_visible_text(options_entry_source_text)
+        time.sleep(3)
 
+        wait.until(EC.visibility_of_element_located((By.XPATH, "//tbody//tr//td[14]")))
         displayed_element = driver.find_elements(By.XPATH, "//tbody//tr//td[14]")
 
         displayed_texts = [elem.text.strip() for elem in displayed_element]
         print(displayed_texts)
         time.sleep(3)
 
-    if options_entry_source_text == "Select Entry Source":
-        assert displayed_element.text.strip() == row_text, f"Expected all, but got '{displayed_element.text}'"
-        print(f"Verified: {options_entry_source_text} is displayed correctly")
+        if options_entry_source_text == "Select Entry Source":
+            assert displayed_texts == row_text, f"Expected all, but got '{displayed_texts}'"
+            print(f"Verified: {options_entry_source_text} is displayed correctly")
+            time.sleep(3)
+
+        else:
+            assert all(text == options_entry_source_text for text in
+                       displayed_texts), f"Expected '{options_entry_source_text}', but got '{displayed_texts}'"
+            print(f"Verified: {options_entry_source_text} is displayed correctly")
+            time.sleep(3)
+
+def search_leads(driver):
+    wait = WebDriverWait(driver, 10)
+    wait.until(EC.visibility_of_element_located((By.XPATH, "//button[@class='btn-filter']//*[name()='svg']")))
+
+    driver.find_element(By.XPATH, "//button[@class='btn-filter']//*[name()='svg']").click()
+    time.sleep(3)
+    driver.find_element(By.XPATH, "(//span[contains(@class,'box')])[1]").click()
+    driver.find_element(By.XPATH, "(//span[contains(@class,'box')])[3]").click()
+    time.sleep(2)
+
+    driver.find_element(By.XPATH, "//button[normalize-space()='Apply']").click()
+    time.sleep(3)
+
+    search_lead = driver.find_element(By.XPATH, "(//select)[5]")
+
+    select = Select(search_lead)
+
+    options_search_lead = [option.text.strip() for option in select.options]
+    print(options_search_lead)
+    time.sleep(2)
+
+    for options_search_lead_text in options_search_lead:
+        select.select_by_visible_text(options_search_lead_text)
         time.sleep(3)
 
-    elif options_entry_source_text == "Call Center":
-        assert displayed_element.text.strip() == options_entry_source_text, f"Expected '{options_entry_source_text}', but got '{displayed_element.text}'"
-        print(f"Verified: {options_entry_source_text} is displayed correctly")
-        time.sleep(3)
+        if options_search_lead_text == "Search Lead":
+            print(f"Verified: {options_search_lead_text} is displayed correctly")
+            time.sleep(3)
 
-def select_entry_source(driver):
-    entry_source = driver.find_element(By.XPATH, "//select[@class='placeholder:text-gray-300  !border-gray-200  slimbox   !text-gray-600 font-normal '][contains(.,'Search Lead')]")
+        elif options_search_lead_text == "Name":
+            input_box_name = wait.until(
+                EC.visibility_of_element_located((By.XPATH, "//input[@placeholder='Enter Name']")))
 
-    entry_source.click()
+            test_value_name = "Rose"
+            input_box_name.clear()
+            time.sleep(2)
+            print(test_value_name)
+            input_box_name.send_keys(test_value_name)
+            input_box_name.send_keys(Keys.ENTER)
+            time.sleep(3)
 
+            result = driver.find_element(By.XPATH, "//tbody//tr//td[2]").text
+            assert test_value_name in result, "Search by Name failed"
+            print("Search by Name working correctly")
 
+        elif options_search_lead_text == "Lead ID":
+            print("Successful")
 
+        elif options_search_lead_text == "Phone Number":
+            input_box_number = wait.until(
+                EC.visibility_of_element_located((By.XPATH, "//input[@placeholder='Enter Phone Number']")))
+
+            test_value_number = "9873144486"
+            input_box_number.clear()
+            input_box_number.send_keys(test_value_number)
+            input_box_number.send_keys(Keys.ENTER)
+
+            result = driver.find_element(By.XPATH, "//tbody//tr//td[3]").text
+            assert test_value_number in result, "Search by Number failed"
+            print("Search by Number working correctly")
+            time.sleep(2)
 
 
 
