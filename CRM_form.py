@@ -20,15 +20,13 @@ def crm_displayed(driver):
     time.sleep(5)
     #driver.find_element(By.XPATH, "//a[normalize-space()='Rose Mary']").click()
 
-
-
-def crm_form(driver):
-    wait = WebDriverWait(driver, 10)
-
     New_Lead = wait.until(EC.visibility_of_element_located((By.XPATH, "//button[@type='button']")))
     New_Lead.click()
     assert "/crm/lead/add" in driver.current_url
     time.sleep(1)
+
+def internet_sales(driver):
+    wait = WebDriverWait(driver, 10)
 
     with open ("testdata/lead.csv") as file:
         reader = csv.DictReader(file)
@@ -60,8 +58,8 @@ def crm_form(driver):
          Primary_mobile.send_keys(unique_primary_number)
          time.sleep(1)
 
-         Service_type = Select(driver.find_element(By.XPATH, "(//select[@name='connection_type'])[1]"))
-         Service_type.select_by_visible_text(row["service_type"])
+         #Service_type = Select(driver.find_element(By.XPATH, "(//select[@name='connection_type'])[1]"))
+         #Service_type.select_by_visible_text(row["service_type"])
          time.sleep(1)
 
          First_name = driver.find_element(By.XPATH, "//input[@placeholder='First Name']")
@@ -78,7 +76,7 @@ def crm_form(driver):
          Email.send_keys(unique_emaill)
          time.sleep(1)
 
-         unique_username = f"user{int(time.time())}"
+         unique_username = f"user{int(time.time()) % 100}"
          Preferred_username = driver.find_element(By.XPATH, "//input[@placeholder='Preferred Username']")
          Preferred_username.send_keys(unique_username)
          time.sleep(1)
@@ -162,8 +160,8 @@ def crm_form(driver):
          driver.find_element(By.XPATH, "//li[@class='bg-white rounded py-1 font-medium px-2 cursor-pointer'][2]").click()
          time.sleep(5)
 
-         Proceed = driver.find_element(By.XPATH, "(//button[normalize-space()='Proceed'])[1]")
-         Proceed.click()
+         #Proceed = driver.find_element(By.XPATH, "(//button[normalize-space()='Proceed'])[1]")
+         #Proceed.click()
          driver.find_element(By.XPATH, "//button[@data-info='submit-btn'][position()=2]").click()
          time.sleep(1)
 
@@ -172,6 +170,156 @@ def crm_form(driver):
              print("New lead has been successfully created")
 
         #return unique_number, service_type, first_name, last_name, unique_email, unique_username, entry_source, lead_source, assign_to_me, existing_isp, address
+
+
+def IPTV_sales(driver):
+    username = driver.find_element(By.XPATH, "//div[@class='css-wa6cd9']")
+    username.click()
+
+    entry_source = Select(driver.find_element(By.XPATH, "//select[@name='entry_source']"))
+    entry_source.select_by_visible_text("Digital")
+
+    lead_source = Select(driver.find_element(By.XPATH, "//select[@name='lead_source']"))
+    lead_source.select_by_visible_text("Advertisements")
+
+    profession = driver.find_element(By.XPATH, "//input[@placeholder='Enter profession']")
+    profession.send_keys("Scientist")
+
+    account_type = driver.find_element(By.XPATH, "//input[@placeholder='Enter account_type']")
+    account_type.send_keys("Testing")
+
+    test_select = Select(driver.find_element(By.XPATH, "//select[@name='test_select']"))
+    test_select.select_by_visible_text("opt1")
+
+    lead_type = driver.find_element(By.XPATH, "opt1")
+    lead_type.click()
+
+    lead_options = driver.find_element(By.XPATH, "//div[@class='css-9jq23d']")
+    lead_options.click()
+
+    proceed = driver.find_element(By.XPATH, "//button[normalize-space()='Proceed']")
+    proceed.click()
+
+def internet_iptv(driver):
+    wait = WebDriverWait(driver, 10)
+    driver.find_element(By.XPATH,"//p[normalize-space()='Internet+IPTV']").click()
+
+    with open ("testdata/lead.csv") as file:
+        reader = csv.DictReader(file)
+        for row in reader:
+            unique_primary_number = f"98{int(time.time()) % 100000000}"
+            unique_number = print(unique_primary_number)
+            Primary_mobile = wait.until(
+                EC.visibility_of_element_located((By.XPATH, "//input[@placeholder='Primary Mobile']")))
+            Primary_mobile.send_keys(unique_primary_number)
+            time.sleep(1)
+
+            # Service_type = Select(driver.find_element(By.XPATH, "(//select[@name='connection_type'])[1]"))
+            # Service_type.select_by_visible_text(row["service_type"])
+            time.sleep(1)
+
+            First_name = driver.find_element(By.XPATH, "//input[@placeholder='First Name']")
+            First_name.send_keys(row["first_name"])
+            time.sleep(1)
+
+            Last_name = driver.find_element(By.XPATH, "//input[@placeholder='Last Name']")
+            Last_name.send_keys(row["last_name"])
+            time.sleep(1)
+
+            unique_emaill = f"test{int(time.time())}@gmail.com"
+            unique_email = print(unique_emaill)
+            Email = driver.find_element(By.XPATH, "//input[@placeholder='Email']")
+            Email.send_keys(unique_emaill)
+            time.sleep(1)
+
+            unique_username = f"user{int(time.time()) % 100}"
+            Preferred_username = driver.find_element(By.XPATH, "//input[@placeholder='Preferred Username']")
+            Preferred_username.send_keys(unique_username)
+            time.sleep(1)
+
+            unique_secondary_number = f"984{int(time.time()) % 10000000}"
+            Secondary_mobile = driver.find_element(By.XPATH, "//input[@placeholder='Secondary Mobile']")
+            Secondary_mobile.send_keys(unique_secondary_number)
+            time.sleep(1)
+
+            unique_landline = f"43{int(time.time()) % 10000000}"
+            Landline = driver.find_element(By.XPATH, "(//input[@placeholder='Landline'])")
+            Landline.send_keys(unique_landline)
+            time.sleep(1)
+
+            Interested_product_group = wait.until(
+                EC.element_to_be_clickable((By.CSS_SELECTOR, "div.react-select__input-container.css-19bb58m")))
+            Interested_product_group.click()
+            Interested_product_option = driver.find_element(By.XPATH, "//div[text()='business-50 mbs']")
+            Interested_product_option.click()
+            # interested_product_group = driver.find_element(By.XPATH, "//div[text()='50 mbps packages']")
+            # interested_product_group.select_by_visible_text("50 mbps packages")
+            time.sleep(5)
+
+            Interested_product_option = driver.find_element(By.CSS_SELECTOR, "div.react-select__control.css-1t1xqq")
+            Interested_product_option.click()
+            time.sleep(2)
+            Interested_product = driver.find_element(By.XPATH,
+                                                     "//div[text()='Business - 50 mbps (Price:4444.711/Renew:3371.26)']")
+            Interested_product.click()
+            time.sleep(1)
+
+            Entry_source = Select(driver.find_element(By.XPATH, "//select[@data-testid='entry_source']"))
+            Entry_source.select_by_visible_text(row["entry_source"])
+            time.sleep(1)
+
+            Lead_source = Select(driver.find_element(By.XPATH, "//select[@data-testid='lead_source']"))
+            Lead_source.select_by_visible_text(row["lead_source"])
+            time.sleep(1)
+
+            Assigned = wait.until(EC.element_to_be_clickable((By.XPATH,
+                                                              "(//div[contains(@class,'w-[9px] h-[9px] rounded-full absolute top-0.5 transition-transform duration-100 shadow-md translate-x-0.5 bg-white')])[2]")))
+            Assigned.click()
+            time.sleep(2)
+
+            # assigned = Select(driver.find_element(By.CSS_SELECTOR, "div.react-select__input-container.css-19bb58m"))
+            # assigned.select_by_visible_text(row["Assign_to_me"])
+            # time.sleep(1)
+
+            Lead_status = Select(driver.find_element(By.XPATH, "//select[@data-testid='lead_status']"))
+            Lead_status.select_by_visible_text(row["lead_status"])
+            time.sleep(1)
+
+            Existing_isp = Select(driver.find_element(By.XPATH, "//select[@data-testid='existing_isp']"))
+            Existing_isp.select_by_visible_text(row["existing_isp"])
+            time.sleep(1)
+
+            Unique_customer_ID = f"{int(time.time()) % 100}"
+            Customer_ID = driver.find_element(By.XPATH, "(//input[@placeholder='Customer ID'])[1]")
+            Customer_ID.send_keys(Unique_customer_ID)
+
+            Profession = driver.find_element(By.XPATH, "(//input[@placeholder='Enter profession'])[1]")
+            Profession.send_keys(row["profession"])
+            time.sleep(1)
+
+            Account_type = driver.find_element(By.XPATH, "//input[@placeholder='Enter account_type']")
+            Account_type.send_keys(row["account_type"])
+
+            Test_select = Select(driver.find_element(By.XPATH, "//select[@name='test_select']"))
+            Test_select.select_by_visible_text(row["test_select"])
+            time.sleep(1)
+
+            # Lead_type = (driver.find_element(By.XPATH, "//div[@class='css-1xc3v61-indicatorContainer']//*[name()='svg']")).click()
+            # time.sleep(2)
+            # Lead_type_option = driver.find_element(By.XPATH, "//div[@class='css-1p3m7a8-multiValue']").click()
+            # time.sleep(1)
+
+            Remarks = driver.find_element(By.XPATH, "//textarea[contains(@placeholder,'Remarks')]")
+            Remarks.send_keys(row["remarks"])
+
+            # Address = driver.find_element(By.XPATH, "//input[@placeholder='Address']")
+            # Address.send_keys(row["address"])
+            Address = driver.find_element(By.XPATH, "//input[@placeholder='Search Maps']")
+            Address.send_keys(row["address"])
+            time.sleep(2)
+            driver.find_element(By.XPATH,
+                                "//li[@class='bg-white rounded py-1 font-medium px-2 cursor-pointer'][2]").click()
+            time.sleep(5)
 
 
 def lead_details(driver):

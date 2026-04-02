@@ -1,11 +1,11 @@
 import csv
 from driver_setup import setup_driver
 from login import homepage, login
-from CRM_form import crm_displayed, crm_form, lead_details, crm_leads, lead_details_page, my_leads, entry_source, search_leads
+from CRM_form import crm_displayed, internet_sales, lead_details, crm_leads, lead_details_page, my_leads, entry_source, search_leads, IPTV_sales, internet_iptv
 from all_leads import all_leads, entry_sources, sales_process, search_lead, select_date
 from subscriber import create_subscriber, subscriber_dashboard
 from tickets import tickets_page
-from inventory import add_product
+from inventory import add_product, product_search
 from selenium.webdriver.common.by import By
 import time
 
@@ -19,7 +19,11 @@ def complete_test():
 
         crm_displayed(driver)
 
-        crm_form(driver)
+        #internet_sales(driver)
+
+        #IPTV_sales(driver)
+
+        internet_iptv(driver)
 
         lead_details(driver)
 
@@ -45,7 +49,8 @@ def complete_test():
 
         #tickets_page(driver)
         #create_subscriber(driver)
-        add_product(driver)
+        #add_product(driver)
+        #product_search(driver)
         #subscriber_dashboard(driver)
 
         time.sleep(10)

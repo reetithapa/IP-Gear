@@ -10,6 +10,7 @@ def add_product(driver):
     inventory.click()
 
     assert "/inventory/product/list" in driver.current_url, "Not redirected to inventory page"
+    time.sleep(1)
 
     add_product = driver.find_element(By.XPATH, "//a[normalize-space()='Add Product']")
     add_product.click()
@@ -63,6 +64,57 @@ def add_product(driver):
 
     #save = driver.find_element(By.XPATH, "//button[normalize-space()='Save']")
     #save.click()
+
+def product_search(driver):
+    wait = WebDriverWait(driver, 10)
+
+    wait.until(EC.visibility_of_element_located((By.XPATH, "//a[contains(text(),'Inventory')]")))
+    inventory = driver.find_element(By.XPATH, "//a[contains(text(),'Inventory')]")
+    inventory.click()
+    time.sleep(2)
+
+    product_selection = driver.find_element(By.XPATH, "//body//div//div[1]//div[1]//div[2]//div[1]//div[1]//div[1]//div[2]//select[1]")
+    select = Select(product_selection)
+
+    options_product_selection = [option.text.strip() for option in select.options]
+    print(options_product_selection)
+    time.sleep(2)
+
+    for options_product_selection_text in options_product_selection:
+        select.select_by_visible_text(options_product_selection_text)
+        time.sleep(3)
+
+        if options_product_selection_text == "Name":
+            input_box_name = wait.until(EC.visibility_of_element_located((By.XPATH, "//input[@placeholder='Search name']")))
+            input_box_name.clear()
+
+            test_value_name = "router 2.4G"
+
+            time.sleep(2)
+            print(test_value_name)
+            input_box_name.send_keys(test_value_name)
+            input_box_name.send_keys(Keys.ENTER)
+            time.sleep(3)
+
+            result = driver.find_element(By.XPATH, "//tbody//tr//td[2]").text
+            assert test_value_name in result, "Search by Name failed"
+            print("Search by Name working correctly")
+
+        else:
+            input_box_code = wait.until(EC.visibility_of_element_located((By.XPATH, "//input[@placeholder='Search code']")))
+            input_box_code.clear()
+
+            test_value_code = "0111"
+            time.sleep(2)
+
+            print(test_value_code)
+            input_box_code.send_keys(test_value_code)
+            input_box_code.send_keys(Keys.ENTER)
+            time.sleep(2)
+
+            result = driver.find_element(By.XPATH, "//tbody//tr//td[6]").text
+            assert test_value_code in result, "Search by Code failed"
+            print("Search by Code working correctly")
 
 
 

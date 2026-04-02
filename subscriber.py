@@ -176,14 +176,98 @@ def subscriber_dashboard(driver):
     wait = WebDriverWait(driver, 10)
     subscriber = driver.find_element(By.XPATH, "//a[normalize-space()='Subscribers']")
     subscriber.click()
+    time.sleep(3)
 
     dashboard = driver.find_element(By.XPATH, "//a[contains(text(),'Subscriber Dashboard')]")
     dashboard.click()
-
+    time.sleep(2)
     assert "/subscriber/list" in driver.current_url, "Not redirected to subscriber dashboard"
+    time.sleep(5)
 
-    username_dashboard = driver.find_element(By.XPATH, "//a[normalize-space()='qysyd_wfn']")
-    print(username_dashboard.text)
+    #username_dashboard = driver.find_element(By.XPATH, "//a[normalize-space()='qysyd_wfn']")
+    #print(username_dashboard.text)
+
+    search_subscriber = driver.find_element(By.XPATH, "//div[@data-testid='wrapper-div']//div//select")
+    select = Select(search_subscriber)
+
+    options_search_subscriber = [option.text.strip() for option in select.options]
+    print(options_search_subscriber)
+    time.sleep(2)
+
+    for options_search_subscriber_text in options_search_subscriber:
+        select.select_by_visible_text(options_search_subscriber_text)
+        time.sleep(3)
+
+        if options_search_subscriber_text == "Username":
+            input_box_username = wait.until(EC.visibility_of_element_located((By.XPATH, "//input[@placeholder='Search username']")))
+            input_box_username.clear()
+
+            test_value_username = "rose_wfn"
+
+            time.sleep(2)
+            print(test_value_username)
+            input_box_username.send_keys(test_value_username)
+            input_box_username.send_keys(Keys.ENTER)
+            time.sleep(3)
+
+            result = driver.find_element(By.XPATH, "//tbody//tr//td[4]").text
+            assert test_value_username in result, "Search by Username failed"
+            print("Search by Username working correctly")
+
+        elif options_search_subscriber_text == "Email":
+            input_box_email = wait.until(EC.visibility_of_element_located((By.XPATH, "//input[@placeholder='Search email']")))
+            input_box_email.clear()
+
+            test_value_email = "rose@gmail.com"
+
+            time.sleep(2)
+            print(test_value_email)
+            input_box_email.send_keys(test_value_email)
+            input_box_email.send_keys(Keys.ENTER)
+            time.sleep(2)
+
+            result = driver.find_element(By.XPATH, "//tbody//tr//td[4]").text
+            assert test_value_username in result, "Search by Email failed"
+            print("Search by Email working correctly")
+
+        elif options_search_subscriber_text == "Mobile":
+            input_box_mobile = wait.until(EC.visibility_of_element_located((By.XPATH, "//input[@placeholder='Search mobile']")))
+            input_box_mobile.clear()
+
+            test_value_mobile = "9800112233"
+
+            time.sleep(2)
+            print(test_value_mobile)
+            input_box_mobile.send_keys(test_value_mobile)
+            input_box_mobile.send_keys(Keys.ENTER)
+            time.sleep(2)
+
+            result = driver.find_element(By.XPATH, "//tbody//tr//td[7]").text
+            assert test_value_mobile in result, "Search by Mobile failed"
+            print("Search by Mobile working correctly")
+
+        elif options_search_subscriber_text == "Address":
+            input_box_address = wait.until(EC.visibility_of_element_located((By.XPATH, "//input[@placeholder='Search address']")))
+            input_box_address.clear()
+
+            test_value_address = "Baneshwar"
+
+            time.sleep(2)
+            print(test_value_address)
+            input_box_address.send_keys(test_value_address)
+            input_box_address.send_keys(Keys.ENTER)
+            time.sleep(2)
+
+            result = driver.find_element(By.XPATH, "//tbody//tr//td[7]").text
+            assert test_value_mobile in result, "Search by Address failed"
+            print("Search by Address working correctly")
+        clear = driver.find_element(By.XPATH, "//button[normalize-space()='Clear Filter']")
+        clear.click()
+
+
+
+
+
 
 
 
