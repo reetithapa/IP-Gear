@@ -23,13 +23,13 @@ def complete_test():
 
         #IPTV_sales(driver)
 
-        internet_iptv(driver)
+        #internet_iptv(driver)
 
-        lead_details(driver)
+        #lead_details(driver)
 
-        crm_leads(driver)
+        #crm_leads(driver)
 
-        lead_details_page(driver)
+        #lead_details_page(driver)
 
         #my_leads(driver)
 
@@ -49,9 +49,9 @@ def complete_test():
 
         #tickets_page(driver)
         #create_subscriber(driver)
-        #add_product(driver)
-        #product_search(driver)
-        #subscriber_dashboard(driver)
+        add_product(driver)
+        product_search(driver)
+        subscriber_dashboard(driver)
 
         time.sleep(10)
 

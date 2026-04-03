@@ -97,10 +97,11 @@ def internet_sales(driver):
          Interested_product_option.click()
          # interested_product_group = driver.find_element(By.XPATH, "//div[text()='50 mbps packages']")
          # interested_product_group.select_by_visible_text("50 mbps packages")
-         time.sleep(2)
+         time.sleep(3)
 
          Interested_product_option = driver.find_element(By.CSS_SELECTOR, "div.react-select__control.css-1t1xqq")
          Interested_product_option.click()
+         time.sleep(2)
          Interested_product = driver.find_element(By.XPATH, "//div[text()='Business - 50 mbps (Price:4444.711/Renew:3371.26)']")
          Interested_product.click()
          time.sleep(1)
@@ -146,7 +147,7 @@ def internet_sales(driver):
 
          #Lead_type = (driver.find_element(By.XPATH, "//div[@class='css-1xc3v61-indicatorContainer']//*[name()='svg']")).click()
          #time.sleep(2)
-         #Lead_type_option = driver.find_element(By.XPATH, "//div[@class='css-1p3m7a8-multiValue']").click()
+         #Lead_type_option = driver.find_element(By.XPATH, "//div[@class='css-9jq23d']").click()
          #time.sleep(1)
 
          Remarks = driver.find_element(By.XPATH, "//textarea[contains(@placeholder,'Remarks')]")
